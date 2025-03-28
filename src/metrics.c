@@ -1,0 +1,173 @@
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 200809L
+#endif
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "metrics.h"
+#include "helpers.h"
+
+// =========================
+// Implementación de métricas
+// =========================
+
+// Pizza más vendida
+char* pms(int* size, Order* orders) {
+    if (*size == 0 || orders == NULL) return strdup("Pizza más vendida: Sin datos");
+
+    typedef struct {
+        char nombre[128];
+        int cantidad;
+    } Conteo;
+
+    Conteo* conteos = malloc(sizeof(Conteo) * (*size));
+    int num_pizzas = 0;
+
+    for (int i = 0; i < *size; i++) {
+        char* actual = orders[i].pizza_name;
+        int cantidad = orders[i].quantity;
+
+        int encontrado = 0;
+        for (int j = 0; j < num_pizzas; j++) {
+            if (strcmp(conteos[j].nombre, actual) == 0) {
+                conteos[j].cantidad += cantidad;
+                encontrado = 1;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            memset(&conteos[num_pizzas], 0, sizeof(Conteo));
+            strncpy(conteos[num_pizzas].nombre, actual, sizeof(conteos[num_pizzas].nombre) - 1);
+            conteos[num_pizzas].cantidad = cantidad;
+            num_pizzas++;
+        }
+    }
+
+    int max_cantidad = 0;
+    for (int i = 0; i < num_pizzas; i++) {
+        if (conteos[i].cantidad > max_cantidad) {
+            max_cantidad = conteos[i].cantidad;
+        }
+    }
+
+    // Crear string con las pizzas más vendidas
+    char pizzas[512] = "";
+    for (int i = 0; i < num_pizzas; i++) {
+        if (conteos[i].cantidad == max_cantidad) {
+            if (strlen(pizzas) > 0) strcat(pizzas, ", ");
+            strcat(pizzas, conteos[i].nombre);
+        }
+    }
+
+    char* resultado = malloc(1024);
+    snprintf(resultado, 1024, "Pizza más vendida: %s", pizzas);
+
+    free(conteos);
+    return resultado;
+}
+
+// Fecha con menos ventas (en dinero)
+char* dls(int* size, Order* orders) {
+    if (*size == 0 || orders == NULL) return strdup("Sin datos");
+
+    int num_fechas = 0;
+    FechaAgrupada* fechas = agrupar_fechas_unicas(orders, *size, &num_fechas);
+
+    if (num_fechas == 0) {
+        free(fechas);
+        return strdup("Sin fechas agrupadas.");
+    }
+
+    float min_total = __FLT_MAX__;
+    char fecha_min[16] = "";
+
+    for (int i = 0; i < num_fechas; i++) {
+        float suma = 0.0;
+        for (int j = 0; j < *size; j++) {
+            if (strcmp(fechas[i].fecha, orders[j].order_date) == 0) {
+                suma += orders[j].total_price;
+            }
+        }
+
+        if (suma < min_total) {
+            min_total = suma;
+            strncpy(fecha_min, fechas[i].fecha, sizeof(fecha_min) - 1);
+        }
+    }
+
+    char* resultado = malloc(128);
+    snprintf(resultado, 128, "La fecha con menos ventas es: %s con $%.2f", fecha_min, min_total);
+
+    free(fechas);
+    return resultado;
+}
+
+// Fecha con menos ventas (cantidad)
+char* dlsp(int* size, Order* orders) {
+    if (*size == 0 || orders == NULL) return strdup("Sin datos");
+
+    int num_fechas = 0;
+    FechaAgrupada* fechas = agrupar_fechas_unicas(orders, *size, &num_fechas);
+
+    if (num_fechas == 0) {
+        free(fechas);
+        return strdup("Sin fechas agrupadas.");
+    }
+
+    int min_cantidad = __INT_MAX__;
+    char fecha_min[16] = "";
+
+    for (int i = 0; i < num_fechas; i++) {
+        int suma = 0;
+        for (int j = 0; j < *size; j++) {
+            if (strcmp(fechas[i].fecha, orders[j].order_date) == 0) {
+                suma += orders[j].quantity;
+            }
+        }
+
+        if (suma < min_cantidad) {
+            min_cantidad = suma;
+            strncpy(fecha_min, fechas[i].fecha, sizeof(fecha_min) - 1);
+        }
+    }
+
+    char* resultado = malloc(128);
+    snprintf(resultado, 128, "La fecha con menos pizzas vendidas es: %s con %d unidades", fecha_min, min_cantidad);
+
+    free(fechas);
+    return resultado;
+}
+// =========================
+// Tabla de métricas
+// =========================
+
+
+static Metricas disponibles[] = {
+    {"pms", pms},
+    // Puedes agregar las demás a medida que las implementes:
+    // {"pls", pls},
+    // {"dms", dms},
+    {"dls", dls},
+    // {"dmsp", dmsp},
+    {"dlsp", dlsp},
+    // {"apo", apo},
+    // {"apd", apd},
+    // {"ims", ims},
+    // {"hp", hp}
+};
+
+// =========================
+// Función de búsqueda de métrica
+// =========================
+
+Metrica obtener_metrica(const char* nombre) {
+    int total = sizeof(disponibles) / sizeof(Metricas);
+    for (int i = 0; i < total; i++) {
+        if (strcmp(disponibles[i].name, nombre) == 0) {
+            return disponibles[i].funcion;
+        }
+    }
+    return NULL;
+}
