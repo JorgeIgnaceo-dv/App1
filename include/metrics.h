@@ -4,6 +4,7 @@
 // Incluimos la definición del struct Order
 #include "order.h"  
 #include "helpers.h"
+
 // Creamos el tipo de función general para métricas
 typedef char* (*Metrica)(int*, Order*);
 
@@ -18,7 +19,7 @@ Metrica obtener_metrica(const char* nombre);
 
 // Declaraciones de funciones métricas
 char* pms(int* size, Order* orders);   // Pizza más vendida (Jorge)
-char* pls(int* size, Order* orders);   // Pizza menos vendida (Carlos)
+char* pls(int* size, Order* orders); // Pizza menos vendida (Carlos)
 char* dms(int* size, Order* orders);   // Día con más ventas en dinero (Carlos)
 char* dls(int* size, Order* orders);   // Día con menos ventas en dinero (Jorge)
 char* dmsp(int* size, Order* orders);  // Día con más pizzas vendidas (Diego)

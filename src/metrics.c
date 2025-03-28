@@ -68,6 +68,97 @@ char* pms(int* size, Order* orders) {
     return resultado;
 }
 
+// Pizza menos vendida
+
+char* pls(int* size, Order* orders) {
+    if (*size == 0 || orders == NULL) return strdup("Pizza menos vendida: Sin datos");
+
+    typedef struct {
+        char nombre[128];
+        int cantidad;
+    } Conteo;
+
+    Conteo* conteos = malloc(sizeof(Conteo) * (*size));
+    int num_pizzas = 0;
+
+    for (int i = 0; i < *size; i++) {
+        char* actual = orders[i].pizza_name;
+        int cantidad = orders[i].quantity;
+
+        int encontrado = 0;
+        for (int j = 0; j < num_pizzas; j++) {
+            if (strcmp(conteos[j].nombre, actual) == 0) {
+                conteos[j].cantidad += cantidad;
+                encontrado = 1;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            memset(&conteos[num_pizzas], 0, sizeof(Conteo));
+            strncpy(conteos[num_pizzas].nombre, actual, sizeof(conteos[num_pizzas].nombre) - 1);
+            conteos[num_pizzas].cantidad = cantidad;
+            num_pizzas++;
+        }
+    }
+    int min_cantidad = __INT_MAX__; // Inicializar con un valor alto
+    // Averiguar que significa  INT MAX
+    for (int i = 0; i < num_pizzas; i++) {
+        if (conteos[i].cantidad < min_cantidad) {
+            min_cantidad = conteos[i].cantidad;
+        }
+    }
+
+    // Crear string con las pizzas menos vendidas
+    char pizzas[512] = "";
+    for (int i = 0; i < num_pizzas; i++) {
+        if (conteos[i].cantidad == min_cantidad) {
+            if (strlen(pizzas) > 0) strcat(pizzas, ", ");
+            strcat(pizzas, conteos[i].nombre);
+        }
+    }
+
+    char* resultado = malloc(1024);
+    snprintf(resultado, 1024, "Pizza menos vendida: %s", pizzas);
+
+    free(conteos);
+    return resultado;
+}
+// Fecha con más ventas (en dinero)
+char* dms(int* size, Order* orders) {
+    if (*size == 0 || orders == NULL) return strdup("Sin datos");
+
+    int num_fechas = 0;
+    FechaAgrupada* fechas = agrupar_fechas_unicas(orders, *size, &num_fechas);
+
+    if (num_fechas == 0) {
+        free(fechas);
+        return strdup("Sin fechas agrupadas.");
+    }
+
+    float max_total = 0.0; // Inicializar con el valor más bajo posible
+    char fecha_max[16] = "";
+
+    for (int i = 0; i < num_fechas; i++) {
+        float suma = 0.0;
+        for (int j = 0; j < *size; j++) {
+            if (strcmp(fechas[i].fecha, orders[j].order_date) == 0) {
+                suma += orders[j].total_price;
+            }
+        }
+
+        if (suma > max_total) {
+            max_total = suma;
+            strncpy(fecha_max, fechas[i].fecha, sizeof(fecha_max) - 1);
+        }
+    }
+
+    char* resultado = malloc(128);
+    snprintf(resultado, 128, "La fecha con más ventas es: %s con $%.2f", fecha_max, max_total);
+
+    free(fechas);
+    return resultado;
+}
 // Fecha con menos ventas (en dinero)
 char* dls(int* size, Order* orders) {
     if (*size == 0 || orders == NULL) return strdup("Sin datos");
