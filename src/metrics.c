@@ -230,6 +230,40 @@ char* dlsp(int* size, Order* orders) {
     free(fechas);
     return resultado;
 }
+
+// Promedio de pizzas por orden
+char* apo(int* size, Order* orders) {
+    if (!orders || *size <= 0) {
+        return strdup("No hay datos disponibles.");
+    }
+
+    int total_pizzas = 0;
+    int total_ordenes = 0;
+
+    // Contar el total de pizzas y el número de órdenes únicas
+    for (int i = 0; i < *size; i++) {
+        total_pizzas += orders[i].quantity;
+
+        // Contar órdenes únicas (asumiendo que cada `order_id` es único por orden)
+        if (i == 0 || orders[i].order_id != orders[i - 1].order_id) {
+            total_ordenes++;
+        }
+    }
+
+    // Calcular el promedio
+    double promedio = (double)total_pizzas / total_ordenes;
+
+    // Crear el resultado
+    char* resultado = (char*)malloc(50 * sizeof(char));
+    if (!resultado) {
+        return strdup("Error de memoria.");
+    }
+
+    snprintf(resultado, 50, "Promedio de pizzas por orden: %.2f", promedio);
+
+    return resultado;
+}
+
 //Metrica de promedio de pizzas por dia
 char* apd(int* size, Order* orders) {
     if (!orders || *size <= 0) {
@@ -256,6 +290,76 @@ char* apd(int* size, Order* orders) {
 
     // Limpiar la basura(liberar memoria)
     free(fechas);
+
+    return resultado;
+}
+
+// Metrica propuesta para la separacion de ingredientes
+char* ims(int* size, Order* orders) {
+    if (*size == 0 || orders == NULL) return strdup("Ingrediente más vendido: Sin datos");
+
+    // Estructura para almacenar el conteo de ingredientes
+    typedef struct {
+        char nombre[64];
+        int cantidad;
+    } Ingrediente;
+
+    Ingrediente* conteos = malloc(sizeof(Ingrediente) * 100); // Capacidad inicial para 100 ingredientes
+    int num_ingredientes = 0;
+
+    for (int i = 0; i < *size; i++) {
+        char* ingredientes = strdup(orders[i].pizza_ingredients); // Copiar los ingredientes de la orden
+        char* token = strtok(ingredientes, ","); // Separar por comas
+
+        while (token != NULL) {
+            // Eliminar espacios en blanco al inicio y al final
+            while (*token == ' ') token++;
+            char* end = token + strlen(token) - 1;
+            while (end > token && *end == ' ') *end-- = '\0';
+
+            // Buscar si el ingrediente ya está en el conteo
+            int encontrado = 0;
+            for (int j = 0; j < num_ingredientes; j++) {
+                if (strcmp(conteos[j].nombre, token) == 0) {
+                    conteos[j].cantidad++;
+                    encontrado = 1;
+                    break;
+                }
+            }
+
+            // Si no está, agregarlo al conteo
+            if (!encontrado) {
+                strncpy(conteos[num_ingredientes].nombre, token, sizeof(conteos[num_ingredientes].nombre) - 1);
+                conteos[num_ingredientes].nombre[sizeof(conteos[num_ingredientes].nombre) - 1] = '\0';
+                conteos[num_ingredientes].cantidad = 1;
+                num_ingredientes++;
+            }
+
+            token = strtok(NULL, ","); // Siguiente ingrediente
+        }
+
+        free(ingredientes); // Liberar memoria de la copia
+    }
+
+    // Encontrar el ingrediente más vendido
+    int max_cantidad = 0;
+    char* ingrediente_mas_vendido = malloc(64);
+    strcpy(ingrediente_mas_vendido, "Sin datos");
+
+    for (int i = 0; i < num_ingredientes; i++) {
+        if (conteos[i].cantidad > max_cantidad) {
+            max_cantidad = conteos[i].cantidad;
+            strncpy(ingrediente_mas_vendido, conteos[i].nombre, 64);
+        }
+    }
+
+    // Crear el resultado
+    char* resultado = malloc(128);
+    snprintf(resultado, 128, "Ingrediente más vendido: %s con %d ventas", ingrediente_mas_vendido, max_cantidad);
+
+    // Liberar memoria
+    free(conteos);
+    free(ingrediente_mas_vendido);
 
     return resultado;
 }
