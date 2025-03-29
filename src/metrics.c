@@ -230,28 +230,57 @@ char* dlsp(int* size, Order* orders) {
     free(fechas);
     return resultado;
 }
+//Metrica de promedio de pizzas por dia
+char* apd(int* size, Order* orders) {
+    if (!orders || *size <= 0) {
+        return strdup("No hay datos disponibles.");
+    }
+    int num_fechas = 0;
+    FechaAgrupada* fechas = agrupar_fechas_unicas(orders, *size, &num_fechas);
+    if (!fechas || num_fechas == 0) {
+        return strdup("Error al agrupar fechas.");
+    }
+    int total_pizzas = 0;
+    for (int i = 0; i < *size; i++) {
+        total_pizzas += orders[i].quantity;
+    }
+    double promedio = (double)total_pizzas / num_fechas;
+
+    char* resultado = (char*)malloc(50 * sizeof(char));
+    if (!resultado) {
+        free(fechas);
+        return strdup("Error de memoria.");
+    }
+
+    snprintf(resultado, 50, "Promedio de pizzas por día: %.2f", promedio);
+
+    // Limpiar la basura(liberar memoria)
+    free(fechas);
+
+    return resultado;
+}
+
 //Métrica pizzas vendidas por categoría
 
-// Definimos una estructura auxiliar para almacenar la cantidad de pizzas por categoría
 typedef struct {
-    char categoria[32]; // Tamaño basado en order.h
+    char categoria[32];
     int cantidad;
 } CategoriaVentas;
 
-// Función para obtener la cantidad de pizzas vendidas por categoría
+
 char* hp(int* size, Order* orders) {
     if (!orders || *size <= 0) {
         return strdup("No hay datos disponibles.");
     }
 
-    CategoriaVentas categorias[50]; // Asumimos un máximo de 50 categorías distintas
+    CategoriaVentas categorias[50];
     int numCategorias = 0;
 
     for (int i = 0; i < *size; i++) {
         Order order = orders[i];
         char* categoria = order.pizza_category;
 
-        // Buscar si la categoría ya está registrada
+
         int found = 0;
         for (int k = 0; k < numCategorias; k++) {
             if (strcmp(categorias[k].categoria, categoria) == 0) {
@@ -261,15 +290,13 @@ char* hp(int* size, Order* orders) {
             }
         }
 
-        // Si no la encontramos, la añadimos
+
         if (!found) {
             strcpy(categorias[numCategorias].categoria, categoria);
             categorias[numCategorias].cantidad = order.quantity;
             numCategorias++;
         }
     }
-
-    // Construcción de la cadena de salida
     char* resultado = (char*)malloc(1024 * sizeof(char)); // Reservamos memoria suficiente
     if (!resultado) {
         return strdup("Error de memoria.");
@@ -299,7 +326,7 @@ static Metricas disponibles[] = {
     // {"dmsp", dmsp},
     {"dlsp", dlsp},
     // {"apo", apo},
-    // {"apd", apd},
+     {"apd", apd},
     // {"ims", ims},
     {"hp", hp},
 };
