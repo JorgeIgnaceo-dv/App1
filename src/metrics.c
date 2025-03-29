@@ -230,6 +230,61 @@ char* dlsp(int* size, Order* orders) {
     free(fechas);
     return resultado;
 }
+//Métrica pizzas vendidas por categoría
+
+// Definimos una estructura auxiliar para almacenar la cantidad de pizzas por categoría
+typedef struct {
+    char categoria[32]; // Tamaño basado en order.h
+    int cantidad;
+} CategoriaVentas;
+
+// Función para obtener la cantidad de pizzas vendidas por categoría
+char* hp(int* size, Order* orders) {
+    if (!orders || *size <= 0) {
+        return strdup("No hay datos disponibles.");
+    }
+
+    CategoriaVentas categorias[50]; // Asumimos un máximo de 50 categorías distintas
+    int numCategorias = 0;
+
+    for (int i = 0; i < *size; i++) {
+        Order order = orders[i];
+        char* categoria = order.pizza_category;
+
+        // Buscar si la categoría ya está registrada
+        int found = 0;
+        for (int k = 0; k < numCategorias; k++) {
+            if (strcmp(categorias[k].categoria, categoria) == 0) {
+                categorias[k].cantidad += order.quantity;
+                found = 1;
+                break;
+            }
+        }
+
+        // Si no la encontramos, la añadimos
+        if (!found) {
+            strcpy(categorias[numCategorias].categoria, categoria);
+            categorias[numCategorias].cantidad = order.quantity;
+            numCategorias++;
+        }
+    }
+
+    // Construcción de la cadena de salida
+    char* resultado = (char*)malloc(1024 * sizeof(char)); // Reservamos memoria suficiente
+    if (!resultado) {
+        return strdup("Error de memoria.");
+    }
+
+    resultado[0] = '\0';
+    for (int i = 0; i < numCategorias; i++) {
+        char buffer[100];
+        snprintf(buffer, sizeof(buffer), "%s: %d\n", categorias[i].categoria, categorias[i].cantidad);
+        strcat(resultado, buffer);
+    }
+
+    return resultado;
+}
+
 // =========================
 // Tabla de métricas
 // =========================
@@ -246,7 +301,7 @@ static Metricas disponibles[] = {
     // {"apo", apo},
     // {"apd", apd},
     // {"ims", ims},
-    // {"hp", hp}
+    {"hp", hp},
 };
 
 // =========================
