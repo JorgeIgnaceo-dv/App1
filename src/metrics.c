@@ -355,7 +355,7 @@ char* ims(int* size, Order* orders) {
 
     // Crear el resultado
     char* resultado = malloc(128);
-    snprintf(resultado, 128, "Ingrediente más vendido: %s con %d ventas", ingrediente_mas_vendido, max_cantidad);
+    snprintf(resultado, 128, "Ingrediente mas vendido: %s con %d ventas", ingrediente_mas_vendido, max_cantidad);
 
     // Liberar memoria
     free(conteos);
@@ -416,6 +416,57 @@ char* hp(int* size, Order* orders) {
     return resultado;
 }
 
+char* dmsp(int* size, Order* orders) {
+    if (!orders || *size <= 0) {
+        return strdup("No hay datos disponibles.");
+    }
+
+    // Obtener las fechas únicas
+    int num_fechas = 0;
+    FechaAgrupada* fechas = agrupar_fechas_unicas(orders, *size, &num_fechas);
+    if (!fechas || num_fechas == 0) {
+        return strdup("Error al agrupar fechas.");
+    }
+
+    // Crear un array para contar las pizzas vendidas por día
+    int ventas_por_dia[num_fechas];
+    memset(ventas_por_dia, 0, sizeof(ventas_por_dia));
+
+    // Contar cuántas pizzas se vendieron cada día
+    for (int i = 0; i < *size; i++) {
+        for (int j = 0; j < num_fechas; j++) {
+            if (strcmp(orders[i].order_date, fechas[j].fecha) == 0) {
+                ventas_por_dia[j] += orders[i].quantity;
+                break;
+            }
+        }
+    }
+
+    // Encontrar el día con más pizzas vendidas
+    int max_ventas = ventas_por_dia[0];
+    int max_index = 0;
+    for (int i = 1; i < num_fechas; i++) {
+        if (ventas_por_dia[i] > max_ventas) {
+            max_ventas = ventas_por_dia[i];
+            max_index = i;
+        }
+    }
+
+    // Guardar la fecha del día con más pizzas vendidas
+    char* resultado = (char*)malloc(50 * sizeof(char));
+    if (!resultado) {
+        free(fechas);
+        return strdup("Error de memoria.");
+    }
+
+    snprintf(resultado, 50, "Dia con mas pizzas vendidas: %s(%d pizzas)", fechas[max_index].fecha, max_ventas);
+
+    // Liberar memoria de fechas únicas
+    free(fechas);
+
+    return resultado;
+}
+
 // =========================
 // Tabla de métricas
 // =========================
@@ -427,7 +478,7 @@ static Metricas disponibles[] = {
     {"pls", pls},
     {"dms", dms},
     {"dls", dls},
-    // {"dmsp", dmsp},
+    {"dmsp", dmsp},
     {"dlsp", dlsp},
     {"apo", apo},
     {"apd", apd},
