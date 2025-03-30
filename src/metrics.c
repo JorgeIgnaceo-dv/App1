@@ -424,14 +424,14 @@ char* hp(int* size, Order* orders) {
 static Metricas disponibles[] = {
     {"pms", pms},
     // Puedes agregar las demás a medida que las implementes:
-    // {"pls", pls},
-    // {"dms", dms},
+    {"pls", pls},
+    {"dms", dms},
     {"dls", dls},
     // {"dmsp", dmsp},
     {"dlsp", dlsp},
-    // {"apo", apo},
-     {"apd", apd},
-    // {"ims", ims},
+    {"apo", apo},
+    {"apd", apd},
+    {"ims", ims},
     {"hp", hp},
 };
 
