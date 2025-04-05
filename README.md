@@ -1,6 +1,6 @@
 # App1
 
-## **Profesores**
+## **Profesores 2**
 - **María Loreto Arriagada** <br>
   <loreto.arriagada.v@edu.uai.cl>
 
