@@ -283,18 +283,18 @@ char* apo(int* size, Order* orders) {
 
 char* apd(int* size, Order* orders) {
     if (!orders || *size <= 0) {
-        return strdup("No hay datos disponibles.");
+        return strdup("No hay datos disponibles.");//Si el arreglo de ordenes es igual o menor a 0 imprime un mensaje
     }
     int num_fechas = 0;
     FechaAgrupada* fechas = agrupar_fechas_unicas(orders, *size, &num_fechas);
     if (!fechas || num_fechas == 0) {
-        return strdup("Error al agrupar fechas.");
+        return strdup("Error al agrupar fechas.");//Usando helpers.c se encuentran las fechas unicas
     }
     int total_pizzas = 0;
     for (int i = 0; i < *size; i++) {
-        total_pizzas += orders[i].quantity;
+        total_pizzas += orders[i].quantity; //Se suman todas las pizzas vendidas
     }
-    double promedio = (double)total_pizzas / num_fechas;
+    double promedio = (double)total_pizzas / num_fechas; //Se calcula el promedio dividiendo la cantidad por los dias unicos
 
     char* resultado = (char*)malloc(50 * sizeof(char));
     if (!resultado) {
@@ -302,7 +302,7 @@ char* apd(int* size, Order* orders) {
         return strdup("Error de memoria.");
     }
 
-    snprintf(resultado, 50, "Promedio de pizzas por día: %.2f", promedio);
+    snprintf(resultado, 50, "Promedio de pizzas por día: %.2f", promedio); //Se imprime el promedio calculado
 
     // Limpiar la basura(liberar memoria)
     free(fechas);
@@ -391,13 +391,13 @@ typedef struct {
     int cantidad;
 } CategoriaVentas;
 
-
 char* hp(int* size, Order* orders) {
     if (!orders || *size <= 0) {
-        return strdup("No hay datos disponibles.");
+        return strdup("No hay datos disponibles."); //Verificamos que el arreglo de órdenes no sea nulo o negativo
     }
 
-    CategoriaVentas categorias[50];
+    CategoriaVentas categorias[50]; //Creamos un arreglo para almacenar categorias y sus cantidades(en este caso son
+    //solo dos, pero sí tuviéramos más se registrarian
     int numCategorias = 0;
 
     for (int i = 0; i < *size; i++) {
@@ -409,7 +409,7 @@ char* hp(int* size, Order* orders) {
         for (int k = 0; k < numCategorias; k++) {
             if (strcmp(categorias[k].categoria, categoria) == 0) {
                 categorias[k].cantidad += order.quantity;
-                found = 1;
+                found = 1;//Si la categoria ya esta registrada se suma al conteo de esa categoria
                 break;
             }
         }
@@ -418,10 +418,10 @@ char* hp(int* size, Order* orders) {
         if (!found) {
             strcpy(categorias[numCategorias].categoria, categoria);
             categorias[numCategorias].cantidad = order.quantity;
-            numCategorias++;
+            numCategorias++; //Si la categoria no se encuentra previamente registrada se registra y se le suma la orden
         }
     }
-    char* resultado = (char*)malloc(1024 * sizeof(char)); // Reservamos memoria suficiente
+    char* resultado = (char*)malloc(1024 * sizeof(char)); // Reservamos memoria suficiente(1024 bytes es suficiente)
     if (!resultado) {
         return strdup("Error de memoria.");
     }
@@ -431,17 +431,17 @@ char* hp(int* size, Order* orders) {
         char buffer[100];
         snprintf(buffer, sizeof(buffer), "%s: %d\n", categorias[i].categoria, categorias[i].cantidad);
         strcat(resultado, buffer);
-    }
+    }//Se muestran las categorias y su cantidad
 
     return resultado;
 }
-
+//Metrica para mostrar el dia con menos pizzas vendidas
 char* dmsp(int* size, Order* orders) {
     if (!orders || *size <= 0) {
         return strdup("No hay datos disponibles.");
     }
 
-    // Obtener las fechas únicas
+    // Obtener las fechas únicas usando helpers.c
     int num_fechas = 0;
     FechaAgrupada* fechas = agrupar_fechas_unicas(orders, *size, &num_fechas);
     if (!fechas || num_fechas == 0) {
@@ -462,8 +462,7 @@ char* dmsp(int* size, Order* orders) {
         }
     }
 
-    // Encontrar el día con más pizzas vendidas
-    int max_ventas = ventas_por_dia[0];
+    int max_ventas = ventas_por_dia[0];// Encontrar el día con más pizzas vendidas
     int max_index = 0;
     for (int i = 1; i < num_fechas; i++) {
         if (ventas_por_dia[i] > max_ventas) {
@@ -471,9 +470,7 @@ char* dmsp(int* size, Order* orders) {
             max_index = i;
         }
     }
-
-    // Guardar la fecha del día con más pizzas vendidas
-    char* resultado = (char*)malloc(50 * sizeof(char));
+    char* resultado = (char*)malloc(50 * sizeof(char));// Guardar la fecha del día con más pizzas vendidas
     if (!resultado) {
         free(fechas);
         return strdup("Error de memoria.");
