@@ -28,32 +28,35 @@ void mostrar_instrucciones() {
     printf("Por favor ingresar las métricas luego del archivo.\n\n");
 }
 
-// Verifica si hay al menos una métrica válida
 int hay_metricas_validas(int cant, char** metricas, int* n, Order* orders) {
-    //con esto evitamos el Warning de una supuesta variable no usada, ya que esta variable será necesaria dentro de esta función para poder usarla más adelante.
+    // Aunque no las usamos aquí directamente, evitamos warnings porque podríamos
+    // necesitar las variables en futuras mejoras (como validaciones más complejas).
     (void)n;
     (void)orders;
 
     for (int i = 0; i < cant; i++) {
         if (obtener_metrica(metricas[i]) != NULL) {
-            return 1;
+            return 1;  // Al menos una métrica es válida
         }
     }
-    return 0;
+    return 0; // Ninguna métrica válida
 }
 
 int main(int argc, char* argv[]) {
-    char archivo[256] = "";
-    Order* orders = NULL;
-    int n = 0;
-    char* metricas[20];
+    // Variables principales
+    char archivo[256] = "";          // Nombre del archivo
+    Order* orders = NULL;            // Arreglo de órdenes
+    int n = 0;                       // Número de órdenes
+    char* metricas[20];              // Métricas ingresadas
     int num_metricas = 0;
+
+    // Flags de validación
     int archivo_ok = 0;
     int metricas_ok = 0;
 
-    // -------------------------------
-    // 1. Intentar cargar desde argumentos
-    // -------------------------------
+    // -------------------------------------
+    // 1. Intentamos cargar desde argumentos
+    // -------------------------------------
     if (argc >= 2) {
         strncpy(archivo, argv[1], sizeof(archivo));
         orders = parse_csv(archivo, &n);
@@ -64,40 +67,45 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    // Verificamos si también se ingresaron métricas por consola
     if (argc >= 3) {
         for (int i = 2; i < argc && num_metricas < 20; i++) {
             metricas[num_metricas++] = argv[i];
         }
+
+        // Si el archivo fue cargado correctamente, evaluamos las métricas
         if (archivo_ok) {
             metricas_ok = hay_metricas_validas(num_metricas, metricas, &n, orders);
         }
     }
 
-    // -------------------------------
     // 2. Si no hay archivo válido, pedirlo
-    // -------------------------------
+
     if (!archivo_ok) {
-        mostrar_instrucciones();
+        mostrar_instrucciones(); // Mostramos menú al inicio
 
         do {
             printf("Ingrese el nombre del archivo CSV: ");
             fgets(archivo, sizeof(archivo), stdin);
-            archivo[strcspn(archivo, "\n")] = 0;
+            archivo[strcspn(archivo, "\n")] = 0; // Eliminamos el salto de línea
+
             orders = parse_csv(archivo, &n);
             archivo_ok = (orders && n > 0);
-            if (!archivo_ok) printf("⚠️  Archivo no válido. Intente de nuevo.\n");
+
+            if (!archivo_ok) {
+                printf("⚠️  Archivo no válido. Intente de nuevo.\n");
+            }
         } while (!archivo_ok);
     }
 
     printf("\n✅ Archivo cargado con %d órdenes.\n", n);
 
-    // -------------------------------
     // 3. Si no hay métricas válidas, pedirlas
-    // -------------------------------
     if (!metricas_ok) {
         mostrar_instrucciones();
 
         char linea[512];
+
         do {
             printf("Ingrese métricas separadas por espacio: ");
             fgets(linea, sizeof(linea), stdin);
@@ -117,10 +125,11 @@ int main(int argc, char* argv[]) {
         } while (!metricas_ok);
     }
 
-    // -------------------------------
+
     // 4. Ejecutar métricas válidas
-    // -------------------------------
+
     printf("\n--- Resultados ---\n");
+
     for (int i = 0; i < num_metricas; i++) {
         Metrica m = obtener_metrica(metricas[i]);
         if (m) {
@@ -132,6 +141,8 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    // Liberamos memoria del arreglo de órdenes
     free(orders);
     return 0;
 }
+
