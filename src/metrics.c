@@ -13,6 +13,8 @@
 // =========================
 
 // Pizza más vendida
+// Recorre las órdenes y agrupa las pizzas por nombre, sumando las cantidades vendidas.
+// Identifica las pizzas con la mayor cantidad vendida y devuelve un string con el resultado.
 char* pms(int* size, Order* orders) {
     if (*size == 0 || orders == NULL) return strdup("Pizza más vendida: Sin datos");
 
@@ -69,6 +71,8 @@ char* pms(int* size, Order* orders) {
 }
 
 // Pizza menos vendida
+// Misma logica que en pms
+// Identifica las pizzas con la menor cantidad y devuelve un string con el resultado.
 
 char* pls(int* size, Order* orders) {
     if (*size == 0 || orders == NULL) return strdup("Pizza menos vendida: Sin datos");
@@ -125,6 +129,8 @@ char* pls(int* size, Order* orders) {
     return resultado;
 }
 // Fecha con más ventas (en dinero)
+// Agrupa las órdenes por fecha y calcula el total de ventas en dinero para cada fecha.
+// Devuelve la fecha con el día más vendido y el monto.
 char* dms(int* size, Order* orders) {
     if (*size == 0 || orders == NULL) return strdup("Sin datos");
 
@@ -160,6 +166,7 @@ char* dms(int* size, Order* orders) {
     return resultado;
 }
 // Fecha con menos ventas (en dinero)
+// Misma logica que dms, pero devuelve la fecha con el día menos vendido y el monto
 char* dls(int* size, Order* orders) {
     if (*size == 0 || orders == NULL) return strdup("Sin datos");
 
@@ -196,6 +203,9 @@ char* dls(int* size, Order* orders) {
 }
 
 // Fecha con menos ventas (cantidad)
+// Agrupa las órdenes por fecha y calcula la cantidad total de pizzas vendidas por fecha.
+// Devuelve la fecha con la menor cantidad de pizzas vendidas.
+
 char* dlsp(int* size, Order* orders) {
     if (*size == 0 || orders == NULL) return strdup("Sin datos");
 
@@ -232,6 +242,9 @@ char* dlsp(int* size, Order* orders) {
 }
 
 // Promedio de pizzas por orden
+// Calcula el promedio de pizzas vendidas por cada orden única.
+// Devuelve un string con el promedio calculado.
+
 char* apo(int* size, Order* orders) {
     if (!orders || *size <= 0) {
         return strdup("No hay datos disponibles.");
@@ -265,6 +278,9 @@ char* apo(int* size, Order* orders) {
 }
 
 //Metrica de promedio de pizzas por dia
+// Agrupa las órdenes por fecha y calcula el promedio de pizzas vendidas por día.
+// Devuelve un string con el promedio calculado.
+
 char* apd(int* size, Order* orders) {
     if (!orders || *size <= 0) {
         return strdup("No hay datos disponibles.");
@@ -295,6 +311,8 @@ char* apd(int* size, Order* orders) {
 }
 
 // Metrica propuesta para la separacion de ingredientes
+// Utiliza un arreglo para contar la cantidad de veces que aparece cada ingrediente.
+// Cuenta la cantidad de veces que aparece cada ingrediente y devuelve el más vendido.
 char* ims(int* size, Order* orders) {
     if (*size == 0 || orders == NULL) return strdup("Ingrediente más vendido: Sin datos");
 
@@ -365,6 +383,8 @@ char* ims(int* size, Order* orders) {
 }
 
 //Métrica pizzas vendidas por categoría
+// Agrupa las órdenes por categoría de pizza y calcula la cantidad total vendida por cada categoría.
+// Devuelve un string con las categorías y sus cantidades correspondientes.
 
 typedef struct {
     char categoria[32];
