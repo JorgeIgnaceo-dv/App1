@@ -441,7 +441,7 @@ char* dmsp(int* size, Order* orders) {
         return strdup("No hay datos disponibles.");
     }
 
-    // Obtener las fechas únicas usando helpers.c
+    // Obtener las fechas únicas
     int num_fechas = 0;
     FechaAgrupada* fechas = agrupar_fechas_unicas(orders, *size, &num_fechas);
     if (!fechas || num_fechas == 0) {
@@ -462,7 +462,8 @@ char* dmsp(int* size, Order* orders) {
         }
     }
 
-    int max_ventas = ventas_por_dia[0];// Encontrar el día con más pizzas vendidas
+    // Encontrar el día con más pizzas vendidas
+    int max_ventas = ventas_por_dia[0];
     int max_index = 0;
     for (int i = 1; i < num_fechas; i++) {
         if (ventas_por_dia[i] > max_ventas) {
@@ -470,19 +471,26 @@ char* dmsp(int* size, Order* orders) {
             max_index = i;
         }
     }
-    char* resultado = (char*)malloc(50 * sizeof(char));// Guardar la fecha del día con más pizzas vendidas
+
+    // Calcular dinámicamente el tamaño necesario para el resultado
+    int largo = snprintf(NULL, 0, "Dia con mas pizzas vendidas: %s(%d pizzas)", 
+                         fechas[max_index].fecha, max_ventas);
+    char* resultado = (char*)malloc((largo + 1) * sizeof(char)); // +1 para '\0'
     if (!resultado) {
         free(fechas);
         return strdup("Error de memoria.");
     }
 
-    snprintf(resultado, 50, "Dia con mas pizzas vendidas: %s(%d pizzas)", fechas[max_index].fecha, max_ventas);
+    // Escribir el resultado final
+    snprintf(resultado, largo + 1, "Dia con mas pizzas vendidas: %s(%d pizzas)", 
+             fechas[max_index].fecha, max_ventas);
 
     // Liberar memoria de fechas únicas
     free(fechas);
 
     return resultado;
 }
+
 
 // =========================
 // Tabla de métricas
