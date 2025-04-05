@@ -111,8 +111,8 @@ TICS200@localhost:~$ Pizza menos vendida: The classic Deluxe Pizza
 
 2. **Sección de reflexiones finales o autoevaluación**  
    - Cada integrante o el grupo redactará **uno o dos párrafos** indicando:  
-     - ¿Qué fue lo más complejo o interesante de la tarea?  
      - ¿Cómo enfrentaron los errores, pruebas y debugging?  
+     - ¿Qué fue lo más complejo o interesante de la tarea?  
      - ¿Qué lecciones aprendieron al implementar en C este tipo de lectura de archivos y cálculos de métricas?
 
 3. **Explicación de cómo usaron IA**  
