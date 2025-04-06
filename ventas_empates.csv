@@ -1,0 +1,54 @@
+pizza_id;order_id;pizza_name_id;quantity;order_date;order_time;unit_price;total_price;pizza_size;pizza_category;pizza_ingredients;pizza_name
+1;19;hawaiian_m;2;01-09-15;12:33:00;13.25;26.50;M;Classic;Sliced Ham, Pineapple, Mozzarella Cheese;The Hawaiian Pizza
+2;19;hawaiian_m;2;01-04-15;17:52:00;13.25;53.00;M;Classic;Sliced Ham, Pineapple, Mozzarella Cheese;The Hawaiian Pizza
+3;3;bbq_chicken_l;2;01-11-15;17:13:00;17.75;35.50;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza
+4;18;pepperoni_xl;4;01-10-15;12:36:00;20.00;80.00;XL;Classic;Pepperoni, Mozzarella Cheese;The XL Pepperoni Pizza
+5;7;pepperoni_xl;3;01-08-15;16:50:00;20.00;60.00;XL;Classic;Pepperoni, Mozzarella Cheese;The XL Pepperoni Pizza
+6;6;bbq_chicken_l;2;01-11-15;16:14:00;17.75;35.50;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza
+7;11;margherita_s;4;01-01-15;14:37:00;10.50;42.00;S;Veggie;Tomato, Basil, Mozzarella Cheese;The Margherita Pizza
+8;18;veggie_m;2;01-06-15;15:10:00;12.00;24.00;M;Veggie;Tomatoes, Green Peppers, Onions, Olives, Mushrooms;The Veggie Pizza
+9;18;classic_dlx_m;1;01-07-15;20:17:00;16.00;16.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+10;6;veggie_m;1;01-03-15;12:54:00;12.00;12.00;M;Veggie;Tomatoes, Green Peppers, Onions, Olives, Mushrooms;The Veggie Pizza
+11;1;bbq_chicken_l;1;01-05-15;20:09:00;17.75;17.75;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza
+12;18;five_cheese_l;1;01-11-15;11:41:00;18.50;18.50;L;Veggie;Mozzarella Cheese, Provolone Cheese, Smoked Gouda Cheese, Romano Cheese, Blue Cheese, Garlic;The Five Cheese Pizza
+13;3;classic_dlx_m;2;01-05-15;17:01:00;16.00;32.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+14;13;bbq_chicken_l;1;01-05-15;13:44:00;17.75;17.75;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza
+15;9;classic_dlx_m;2;01-06-15;19:07:00;16.00;32.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+16;15;five_cheese_l;2;01-08-15;11:40:00;18.50;37.00;L;Veggie;Mozzarella Cheese, Provolone Cheese, Smoked Gouda Cheese, Romano Cheese, Blue Cheese, Garlic;The Five Cheese Pizza
+17;16;veggie_m;2;01-05-15;16:28:00;12.00;24.00;M;Veggie;Tomatoes, Green Peppers, Onions, Olives, Mushrooms;The Veggie Pizza
+18;12;veggie_m;1;01-11-15;11:26:00;12.00;12.00;M;Veggie;Tomatoes, Green Peppers, Onions, Olives, Mushrooms;The Veggie Pizza
+19;5;five_cheese_l;2;01-04-15;19:35:00;18.50;37.00;L;Veggie;Mozzarella Cheese, Provolone Cheese, Smoked Gouda Cheese, Romano Cheese, Blue Cheese, Garlic;The Five Cheese Pizza
+20;16;veggie_m;4;01-02-15;16:18:00;12.00;48.00;M;Veggie;Tomatoes, Green Peppers, Onions, Olives, Mushrooms;The Veggie Pizza
+21;3;bbq_chicken_l;3;01-04-15;17:14:00;17.75;53.25;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza
+22;4;bbq_chicken_l;2;01-10-15;14:34:00;17.75;35.50;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza
+23;14;classic_dlx_m;3;01-08-15;15:11:00;16.00;48.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+24;9;bbq_chicken_l;4;01-08-15;20:15:00;17.75;71.00;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza
+25;14;veggie_m;4;01-01-15;13:23:00;12.00;48.00;M;Veggie;Tomatoes, Green Peppers, Onions, Olives, Mushrooms;The Veggie Pizza
+26;20;hawaiian_m;2;01-10-15;13:29:00;13.25;26.50;M;Classic;Sliced Ham, Pineapple, Mozzarella Cheese;The Hawaiian Pizza
+27;8;hawaiian_m;1;01-09-15;12:37:00;13.25;13.25;M;Classic;Sliced Ham, Pineapple, Mozzarella Cheese;The Hawaiian Pizza
+28;9;veggie_m;1;01-09-15;15:50:00;12.00;12.00;M;Veggie;Tomatoes, Green Peppers, Onions, Olives, Mushrooms;The Veggie Pizza
+29;8;classic_dlx_m;2;01-02-15;14:10:00;16.00;32.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+30;17;five_cheese_l;2;01-03-15;15:55:00;18.50;37.00;L;Veggie;Mozzarella Cheese, Provolone Cheese, Smoked Gouda Cheese, Romano Cheese, Blue Cheese, Garlic;The Five Cheese Pizza
+31;15;hawaiian_m;2;01-08-15;15:07:00;13.25;26.50;M;Classic;Sliced Ham, Pineapple, Mozzarella Cheese;The Hawaiian Pizza
+32;10;pepperoni_xl;10;01-06-15;13:50:00;20.00;20.00;XL;Classic;Pepperoni, Mozzarella Cheese;The XL Pepperoni Pizza
+33;4;classic_dlx_m;3;01-11-15;20:26:00;16.00;48.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+34;9;veggie_m;2;01-03-15;20:02:00;12.00;48.00;M;Veggie;Tomatoes, Green Peppers, Onions, Olives, Mushrooms;The Veggie Pizza
+35;7;margherita_s;1;01-01-15;16:40:00;10.50;21.00;S;Veggie;Tomato, Basil, Mozzarella Cheese;The Margherita Pizza
+36;5;classic_dlx_m;4;01-11-15;12:30:00;16.00;64.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+37;6;bbq_chicken_l;4;01-09-15;15:09:00;13.25;53.00;M;Classic;Sliced Ham, Pineapple, Mozzarella Cheese;The Hawaiian Pizza
+38;19;bbq_chicken_l;3;01-03-15;16:57:00;17.75;53.25;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza
+39;7;hawaiian_m;4;01-10-15;13:20:00;13.25;53.00;M;Classic;Sliced Ham, Pineapple, Mozzarella Cheese;The Hawaiian Pizza
+40;2;five_cheese_l;3;01-08-15;16:33:00;18.50;55.50;L;Veggie;Mozzarella Cheese, Provolone Cheese, Smoked Gouda Cheese, Romano Cheese, Blue Cheese, Garlic;The Five Cheese Pizza
+41;5;classic_dlx_m;4;01-04-15;18:27:00;16.00;64.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+42;2;bbq_chicken_l;3;01-10-15;19:40:00;17.75;53.25;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza
+43;8;five_cheese_l;1;01-10-15;17:27:00;18.50;18.50;L;Veggie;Mozzarella Cheese, Provolone Cheese, Smoked Gouda Cheese, Romano Cheese, Blue Cheese, Garlic;The Five Cheese Pizza
+44;16;five_cheese_l;1;01-05-15;18:47:00;18.50;18.50;L;Veggie;Mozzarella Cheese, Provolone Cheese, Smoked Gouda Cheese, Romano Cheese, Blue Cheese, Garlic;The Five Cheese Pizza
+45;12;margherita_s;4;01-10-15;16:30:00;10.50;42.00;S;Veggie;Tomato, Basil, Mozzarella Cheese;The Margherita Pizza
+46;1;bbq_chicken_l;3;01-10-15;20:29:00;17.75;53.25;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza
+47;20;hawaiian_m;1;01-04-15;16:34:00;13.25;26.50;M;Classic;Sliced Ham, Pineapple, Mozzarella Cheese;The Hawaiian Pizza
+48;20;margherita_s;1;01-06-15;11:36:00;10.50;31.50;S;Veggie;Tomato, Basil, Mozzarella Cheese;The Margherita Pizza
+49;15;classic_dlx_m;4;01-08-15;18:34:00;16.00;32.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+50;14;classic_dlx_m;6;01-10-15;18:38:00;16.00;64.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+51;18;classic_dlx_m;2;01-07-15;20:17:00;16.00;32.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+52;18;classic_dlx_m;4;01-07-15;20:17:00;16.00;64.00;M;Classic;Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon;The Classic Deluxe Pizza
+53;1;bbq_chicken_l;9;01-10-15;20:29:00;17.75;53.25;L;Classic;Chicken, BBQ Sauce, Red Onions, Cilantro;The BBQ Chicken Pizza

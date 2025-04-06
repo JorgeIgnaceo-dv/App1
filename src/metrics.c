@@ -230,48 +230,55 @@ char* dls(int* size, Order* orders) {
 // Retorna un string con esa fecha y la cantidad correspondiente.
 
 char* dlsp(int* size, Order* orders) {
-    // Validación inicial para asegurar que haya datos
     if (*size == 0 || orders == NULL) return strdup("Sin datos");
 
     int num_fechas = 0;
-
-    // Se obtienen las fechas únicas desde las órdenes
     FechaAgrupada* fechas = agrupar_fechas_unicas(orders, *size, &num_fechas);
-
-    // Si no hay fechas únicas, se libera memoria y retorna mensaje
     if (num_fechas == 0) {
         free(fechas);
         return strdup("Sin fechas agrupadas.");
     }
 
-    int min_cantidad = __INT_MAX__;   // Usamos el valor entero más alto posible para comenzar comparación
-    char fecha_min[16] = "";          // Guardará la fecha con la menor cantidad de pizzas
+    int* ventas_por_fecha = calloc(num_fechas, sizeof(int));
 
-    // Recorremos cada fecha única para contar cuántas pizzas se vendieron ese día
-    for (int i = 0; i < num_fechas; i++) {
-        int suma = 0;
-
-        // Sumamos todas las cantidades (quantity) para la fecha actual
-        for (int j = 0; j < *size; j++) {
-            if (strcmp(fechas[i].fecha, orders[j].order_date) == 0) {
-                suma += orders[j].quantity;
+    // Contar pizzas vendidas por fecha
+    for (int i = 0; i < *size; i++) {
+        for (int j = 0; j < num_fechas; j++) {
+            if (strcmp(orders[i].order_date, fechas[j].fecha) == 0) {
+                ventas_por_fecha[j] += orders[i].quantity;
+                break;
             }
-        }
-
-        // Si la suma de esa fecha es menor a la mínima actual, actualizamos
-        if (suma < min_cantidad) {
-            min_cantidad = suma;
-            strncpy(fecha_min, fechas[i].fecha, sizeof(fecha_min) - 1);
         }
     }
 
-    // Reservamos memoria para construir el mensaje de resultado
-    char* resultado = malloc(128);
-    snprintf(resultado, 128, "La fecha con menos pizzas vendidas es: %s con %d unidades", fecha_min, min_cantidad);
+    // Buscar el mínimo
+    int min_cantidad = ventas_por_fecha[0];
+    for (int i = 1; i < num_fechas; i++) {
+        if (ventas_por_fecha[i] < min_cantidad) {
+            min_cantidad = ventas_por_fecha[i];
+        }
+    }
 
-    free(fechas); // Liberamos memoria de fechas agrupadas
+    // Construir string con fechas empatadas
+    char fechas_empate[512] = "";
+    for (int i = 0; i < num_fechas; i++) {
+        if (ventas_por_fecha[i] == min_cantidad) {
+            if (strlen(fechas_empate) > 0) strcat(fechas_empate, ", ");
+            strcat(fechas_empate, fechas[i].fecha);
+        }
+    }
+
+    // Crear mensaje final
+    char* resultado = malloc(1024);
+    snprintf(resultado, 1024, "La(s) fecha(s) con menos pizzas vendidas es(son): %s con %d unidades", fechas_empate, min_cantidad);
+
+    // Limpiar
+    free(ventas_por_fecha);
+    free(fechas);
+
     return resultado;
 }
+
 
 
 // Promedio de pizzas por orden
