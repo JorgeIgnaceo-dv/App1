@@ -551,7 +551,7 @@ char* dmsp(int* size, Order* orders) {
 
     // Creamos el mensaje final
     char* resultado = malloc(1024);
-    snprintf(resultado, 1024, "Día(s) con más pizzas vendidas: %s (%d pizzas)", fechas_empate, max_ventas);
+    snprintf(resultado, 1024, "La(s) fecha(s) con mas pizzas vendidas es(son): %s con %d unidades", fechas_empate, max_ventas);
 
     free(fechas);
     return resultado;
