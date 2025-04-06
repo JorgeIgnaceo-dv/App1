@@ -506,23 +506,23 @@ char* hp(int* size, Order* orders) {
 // Lo que buscamos fue identificar la fecha con mayor cantidad de pizzas vendidas en total.
 
 char* dmsp(int* size, Order* orders) {
-    // Primero verificamos que el puntero a las órdenes sea válido
+    // Validamos que haya órdenes
     if (!orders || *size <= 0) {
         return strdup("No hay datos disponibles.");
     }
 
-    // Agrupamos las fechas únicas usando la función auxiliar agrupar_fechas_unicas()
+    // Obtenemos las fechas únicas
     int num_fechas = 0;
     FechaAgrupada* fechas = agrupar_fechas_unicas(orders, *size, &num_fechas);
     if (!fechas || num_fechas == 0) {
         return strdup("Error al agrupar fechas.");
     }
 
-    // Creamos un arreglo para contar la cantidad de pizzas vendidas por cada día
+    // Arreglo auxiliar para contar la cantidad de pizzas por día
     int ventas_por_dia[num_fechas];
-    memset(ventas_por_dia, 0, sizeof(ventas_por_dia)); // Inicializamos el arreglo en cero
+    memset(ventas_por_dia, 0, sizeof(ventas_por_dia));
 
-    // Luego, por cada orden revisamos su fecha y sumamos su cantidad al total de ese día
+    // Recorremos las órdenes para sumar cantidades por cada fecha
     for (int i = 0; i < *size; i++) {
         for (int j = 0; j < num_fechas; j++) {
             if (strcmp(orders[i].order_date, fechas[j].fecha) == 0) {
@@ -532,37 +532,30 @@ char* dmsp(int* size, Order* orders) {
         }
     }
 
-    // Ahora buscamos el índice del día con la mayor cantidad de pizzas vendidas
+    // Buscamos la cantidad máxima de pizzas vendidas en un día
     int max_ventas = ventas_por_dia[0];
-    int max_index = 0;
     for (int i = 1; i < num_fechas; i++) {
         if (ventas_por_dia[i] > max_ventas) {
             max_ventas = ventas_por_dia[i];
-            max_index = i;
         }
     }
 
-    // Calculamos el tamaño exacto que necesitaremos para el mensaje final
-    int largo = snprintf(NULL, 0, "Dia con mas pizzas vendidas: %s(%d pizzas)", 
-                         fechas[max_index].fecha, max_ventas);
-
-    // Reservamos la memoria y luego escribimos el mensaje
-    char* resultado = (char*)malloc((largo + 1) * sizeof(char)); // +1 para '\0'
-    if (!resultado) {
-        free(fechas);
-        return strdup("Error de memoria.");
+    // Recorremos nuevamente para identificar todas las fechas con esa cantidad máxima
+    char fechas_empate[512] = "";
+    for (int i = 0; i < num_fechas; i++) {
+        if (ventas_por_dia[i] == max_ventas) {
+            if (strlen(fechas_empate) > 0) strcat(fechas_empate, ", ");
+            strcat(fechas_empate, fechas[i].fecha);
+        }
     }
 
-    // Guardamos el resultado con los datos calculados
-    snprintf(resultado, largo + 1, "Dia con mas pizzas vendidas: %s(%d pizzas)", 
-             fechas[max_index].fecha, max_ventas);
+    // Creamos el mensaje final
+    char* resultado = malloc(1024);
+    snprintf(resultado, 1024, "Día(s) con más pizzas vendidas: %s (%d pizzas)", fechas_empate, max_ventas);
 
-    // Liberamos la memoria que usamos para guardar las fechas agrupadas
     free(fechas);
-
     return resultado;
 }
-
 
 
 // Tabla de métricas
