@@ -6,7 +6,7 @@ INC_DIR = include
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 HEADERS = $(wildcard $(INC_DIR)/*.h)
 
-# Nombre del ejecutable (ahora en la raíz del proyecto)
+# Nombre del ejecutable
 TARGET = app1
 
 # Compilador y flags
